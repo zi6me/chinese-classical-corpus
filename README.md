@@ -1,5 +1,7 @@
 # classical-corpus
 
+[![data license](https://img.shields.io/badge/data-CC0--1.0-green)](LICENSE) [![code license](https://img.shields.io/badge/code-MIT-yellow)](LICENSE) [![HF dataset](https://img.shields.io/badge/%F0%9F%A4%97-dataset-blue)](https://huggingface.co/datasets/gujilab/chinese-classical-corpus) [![HF bench](https://img.shields.io/badge/%F0%9F%A4%97-bench-orange)](https://huggingface.co/datasets/gujilab/chinese-classical-bench)
+
 > 📦 **Available on HuggingFace Datasets**: [gujilab/chinese-classical-corpus](https://huggingface.co/datasets/gujilab/chinese-classical-corpus) — load via `datasets.load_dataset()` without rebuilding from sources.
 >
 > 🎯 **配套评测基准**: [gujilab/chinese-classical-bench](https://github.com/gujilab/chinese-classical-bench) ([🤗 gujilab/chinese-classical-bench](https://huggingface.co/datasets/gujilab/chinese-classical-bench)) — 500 道题 × 5 任务，测 LLM 古典文献能力

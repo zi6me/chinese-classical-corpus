@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this corpus, please cite it as below."
+title: "Chinese Classical Corpus"
+abstract: >-
+  A structured corpus of Classical Chinese texts: the complete Thirteen
+  Classics, Shuowen Jiezi, Zizhi Tongjian, and the first 15 of the
+  Twenty-Four Histories (~17M characters), plus ~1.97M Classical<->Modern
+  translation and punctuation-restoration instruction records. Released
+  under CC0 1.0 (public domain).
+authors:
+  - name: "gujilab"
+repository-code: "https://github.com/gujilab/chinese-classical-corpus"
+url: "https://huggingface.co/datasets/gujilab/chinese-classical-corpus"
+license: CC0-1.0
+keywords:
+  - classical-chinese
+  - 文言文
+  - 古文
+  - corpus
+  - instruction-tuning
+  - large-language-models
+version: "1.2"
+date-released: "2026-04-29"

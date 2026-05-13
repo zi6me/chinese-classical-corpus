@@ -30,6 +30,9 @@ configs:
 
 # Chinese Classical Corpus
 
+> 🔗 **源码 & 构建脚本**: [github.com/zi6me/chinese-classical-corpus](https://github.com/zi6me/chinese-classical-corpus) — 完整抽取 pipeline、14 个 Python 脚本、验证套件
+> 🎯 **配套评测基准**: [dzxr/chinese-classical-bench](https://huggingface.co/datasets/dzxr/chinese-classical-bench) — 500 道题 × 5 任务，测 LLM 古典文献能力（题目均从本语料抽样）
+
 中国古典文献结构化语料集，含完整十三经 + 说文解字 + 资治通鉴 + 二十四史前 15 部，以及 197 万条古译今/今译古/断句指令对。
 
 **全部 CC0 公有领域，可商用、可改用、无附加限制。**

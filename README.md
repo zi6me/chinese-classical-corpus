@@ -17,15 +17,30 @@
 
 ## 为什么做这个
 
-中文 —— 尤其是文言文 —— 在 LLM 时代有一个被严重低估的优势：**信息密度**。
+中文（尤其文言文）常被说成"高密度语言"。本语料集 + 配套评测想把这个论点变成**可验证的数字**，包括它**在哪些场景成立、在哪些场景不成立**。
 
-- **Token 经济学**：同一句话的文言文表达，token 数约为现代英文的 1/2，比现代白话还再压缩 30-40%（**实测**：7 个 tokenizer 横评见 [chinese-classical-bench / tokenizer_study](https://github.com/gujilab/chinese-classical-bench/blob/main/tokenizer_study/report.md) —— DeepSeek-V3 tokenizer 上文言文是英文 0.57×；老 GPT-3.5/4 cl100k_base 对中文反而比英文还费 19% token）
-- **典故 = 语义级 RAG 压缩**："图穷匕见"四字承载一整段故事 —— 典故是嵌在语言里的、人类沉淀 2000+ 年的"超浓缩 token"
-- **3000+ 年单一书写系统**：跨时代知识图谱、概念演化建模都靠它，是任何字母语言天生缺失的时间深度训练信号
+### Tokenizer 层面 —— 真成立
+7 个主流 tokenizer 横评（[chinese-classical-bench / tokenizer_study](https://github.com/gujilab/chinese-classical-bench/blob/main/tokenizer_study/report.md)）：
+- DeepSeek-V3 / Qwen2.5 / Qwen3 上**文言文 ≈ 英文 0.57×**
+- 老 GPT-3.5/4 (cl100k_base) **对中文比英文还费 19% token**
 
-但目前 LLM 的训练语料里中文古典占比极低，公开评测几乎只关心白话能力。这个仓库提供**统一 schema 的清洁古典语料 + 197 万条指令对**，希望让任何想补强中文古典能力的模型（开源或商业）都有一个可直接喂的训练材料底盘。
+### Prompt / 任务层面 —— 有 nuance
+3 组实验（[chinese-classical-bench / experiments](https://github.com/gujilab/chinese-classical-bench/tree/main/experiments)）：
 
-配套评测 [gujilab/chinese-classical-bench](https://huggingface.co/datasets/gujilab/chinese-classical-bench) 用于量化训练效果（5 任务 × 100 题）。两个仓库目标一致：**让中文古典文献成为 LLM 时代可量化、可对比、可训练的能力维度**。
+| 场景 | Token 节省 | 准确率/质量 | 结论 |
+|---|---|---|---|
+| 英文 prompt → 文言文 prompt | **−74%** 字符 | **+2pp** 准确率 | **大赢** |
+| 现代中文 prompt → 文言文 prompt（同任务） | −4.7% | **−11.3pp** 准确率 | 不是 free lunch |
+| 典故 prompt vs 字面展开（盲评 140 对） | −25% token | 字面赢 49% > 典故 38% | 省 token，质量有代价 |
+
+### 校准结论
+> 中文高密度 = 真的 **tokenizer-level 优势**，但 ≠ **LLM-task-level free lunch**。
+> 替换英文 prompt 大赢；替换现代中文或用典故压缩则 token 省了、质量有代价。
+> 这意味着训练古典模型的 **训练数据**（本仓库） 和 **评测体系**（[chinese-classical-bench](https://huggingface.co/datasets/gujilab/chinese-classical-bench)）都还有改进空间 —— 还没人系统地针对这条赛道做。
+
+但目前 LLM 训练语料里中文古典占比极低，公开评测几乎只关心白话能力。这个仓库提供**统一 schema 的清洁古典语料 + 197 万条指令对**，希望让任何想补强中文古典能力的模型（开源或商业）都有一个可直接喂的训练材料底盘。
+
+配套评测 [gujilab/chinese-classical-bench](https://huggingface.co/datasets/gujilab/chinese-classical-bench)：6 任务 × 100 题 + 4 个论点验证实验。两个仓库目标一致：**让中文古典文献成为 LLM 时代可量化、可对比、可训练的能力维度**。
 
 ## 覆盖
 

@@ -11,9 +11,13 @@ import json
 import re
 from pathlib import Path
 
-REPO_ROOT = Path("/Users/zion/Documents/zion/classical-corpus")
+import os as _os
+REPO_ROOT = Path(__file__).resolve().parents[1]
 NIUTRANS = Path(
-    "/Users/zion/Documents/zion/reference/Chinese/classical/corpora/Classical-Modern/双语数据"
+    _os.environ.get(
+        "NIUTRANS_DIR",
+        str(REPO_ROOT.parent / "reference/Chinese/classical/corpora/Classical-Modern/双语数据"),
+    )
 )
 
 CN_NUM = {c: i for i, c in enumerate("零一二三四五六七八九", 0)}

@@ -18,6 +18,7 @@ Filters:
 """
 
 import json
+import os
 import random
 import re
 from pathlib import Path
@@ -33,10 +34,11 @@ def apply_recovery(book: str, sentence: str) -> str:
     """Substitute recovered version if available."""
     return RECOVERY_MAP.get(f"{book}::{sentence}", sentence)
 
-REPO_ROOT = Path("/Users/zion/Documents/zion/classical-corpus")
-NIUTRANS = Path(
-    "/Users/zion/Documents/zion/reference/Chinese/classical/corpora/Classical-Modern/双语数据"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+_default_niutrans = (
+    REPO_ROOT.parent / "reference/Chinese/classical/corpora/Classical-Modern/双语数据"
 )
+NIUTRANS = Path(os.environ.get("NIUTRANS_DIR", str(_default_niutrans)))
 OUT_PATH = REPO_ROOT / "output" / "instruct" / "translate.jsonl"
 
 # Instruction prompt variety (古→今)

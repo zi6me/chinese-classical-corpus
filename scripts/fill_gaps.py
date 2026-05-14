@@ -48,7 +48,8 @@ def fetch_ctext(urn_path: str) -> str:
 def patch_shangshu() -> None:
     """Add 3 missing 篇 to 尚书 JSON."""
     target = REPO_ROOT / "output" / "wujing" / "shangshu.json"
-    data = json.load(target.open(encoding="utf-8"))
+    with target.open(encoding="utf-8") as fh:
+        data = json.load(fh)
     existing_chapters = {d["chapter"] for d in data}
 
     next_seq = max(d["section"] for d in data) + 1
@@ -85,7 +86,8 @@ def patch_shangshu() -> None:
 def patch_zhouyi() -> None:
     """Add 屯卦三 + 系辞上 to 周易 JSON."""
     target = REPO_ROOT / "output" / "wujing" / "zhouyi.json"
-    data = json.load(target.open(encoding="utf-8"))
+    with target.open(encoding="utf-8") as fh:
+        data = json.load(fh)
     existing_chapters = {d["chapter"] for d in data}
 
     next_seq = max(d["section"] for d in data) + 1

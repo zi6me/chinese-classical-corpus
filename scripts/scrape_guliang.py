@@ -82,9 +82,10 @@ def main() -> None:
                 "content": body,
             }
         )
-        with OUTPUT.open("w", encoding="utf-8") as f:
-            json.dump(out, f, ensure_ascii=False, indent=2)
         time.sleep(DELAY)
+
+    with OUTPUT.open("w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False, indent=2)
 
     chars = sum(len(r["content"]) for r in out)
     print(f"\ndone: {len(out)} 公, {chars:,} 字  → {OUTPUT.relative_to(REPO_ROOT)}")

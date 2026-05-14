@@ -17,7 +17,7 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-REPO_ROOT = Path("/Users/zion/Documents/zion/classical-corpus")
+REPO_ROOT = Path(__file__).resolve().parents[1]
 OUT = REPO_ROOT / "output"
 
 REQUIRED_BASE = {"id", "source", "content"}
@@ -119,7 +119,8 @@ def validate_json_file(path: Path) -> tuple[Issues, dict]:
     issues = Issues()
     rel = path.relative_to(REPO_ROOT)
     try:
-        records = json.load(path.open(encoding="utf-8"))
+        with path.open(encoding="utf-8") as fh:
+            records = json.load(fh)
     except json.JSONDecodeError as e:
         issues.err(f"JSON parse error: {e}")
         return issues, {}

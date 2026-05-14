@@ -8,17 +8,18 @@ Output: box_recovery.json — map of (book, original_sentence) → recovered_sen
 """
 
 import json
+import os
 import re
 from collections import Counter
 from pathlib import Path
 from opencc import OpenCC
 
 T2S = OpenCC("t2s")
-NIUTRANS = Path(
-    "/Users/zion/Documents/zion/reference/Chinese/classical/corpora/Classical-Modern/双语数据"
-)
-CHTXT = Path("/Users/zion/Documents/zion/reference/Chinese/classical/corpora/chtxt")
-OUT_MAP = Path("/Users/zion/Documents/zion/classical-corpus/output/box_recovery.json")
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+_CORPORA = _REPO_ROOT.parent / "reference/Chinese/classical/corpora"
+NIUTRANS = Path(os.environ.get("NIUTRANS_DIR", str(_CORPORA / "Classical-Modern/双语数据")))
+CHTXT = Path(os.environ.get("CHTXT_DIR", str(_CORPORA / "chtxt")))
+OUT_MAP = _REPO_ROOT / "output" / "box_recovery.json"
 
 # NiuTrans book name → chtxt 繁体 file
 RECOVERY_PAIRS = {

@@ -16,7 +16,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-REPO_ROOT = Path("/Users/zion/Documents/zion/classical-corpus")
+REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE = REPO_ROOT / "output" / "instruct" / "translate.jsonl"
 OUT_REPORT = REPO_ROOT / "output" / "quality_report.md"
 OUT_GRADES = REPO_ROOT / "output" / "quality_grades.jsonl"
@@ -81,13 +81,18 @@ def stratified_sample(records: list[dict], n: int, seed: int = 42) -> list[dict]
     return sample[:n]
 
 
+_GRADE_TOOL = {
+    "name": "grade",
+    "description": "输出评分结果",
+    "input_schema": GRADER_SCHEMA,
+}
+
+
 def grade_one(client, source: str, target: str) -> tuple[dict, object]:
     user_prompt = f"古文原文：\n{source}\n\n现代汉语翻译：\n{target}"
     msg = client.messages.create(
         model=MODEL,
         max_tokens=512,
-        # Disable thinking — grading is a fast classification task
-        thinking={"type": "disabled"},
         system=[
             {
                 "type": "text",
@@ -95,13 +100,12 @@ def grade_one(client, source: str, target: str) -> tuple[dict, object]:
                 "cache_control": {"type": "ephemeral"},
             }
         ],
+        tools=[_GRADE_TOOL],
+        tool_choice={"type": "tool", "name": "grade"},
         messages=[{"role": "user", "content": user_prompt}],
-        output_config={
-            "format": {"type": "json_schema", "schema": GRADER_SCHEMA}
-        },
     )
-    text_block = next(b for b in msg.content if b.type == "text")
-    grade = json.loads(text_block.text)
+    tool_block = next(b for b in msg.content if b.type == "tool_use")
+    grade = tool_block.input
     return grade, msg.usage
 
 
@@ -159,7 +163,11 @@ def main() -> None:
         )
 
     elapsed = time.time() - t0
-    print(f"\ngraded {len(grades)} in {elapsed:.0f}s ({elapsed/len(grades):.1f}s/record)")
+    per_rec = f"{elapsed/len(grades):.1f}s/record" if grades else "n/a"
+    print(f"\ngraded {len(grades)} in {elapsed:.0f}s ({per_rec})")
+    if not grades:
+        print("[error] no grades produced — check API key and model availability", file=sys.stderr)
+        return
 
     # save raw grades
     with OUT_GRADES.open("w", encoding="utf-8") as f:

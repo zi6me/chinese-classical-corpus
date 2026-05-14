@@ -139,8 +139,11 @@ def main() -> int:
         print("nothing to scrape — all 80 vols present")
         return 0
     print(f"scraping vols: {missing}")
-    # next id
-    next_id = 1 + max(int(r["id"].rsplit("#", 1)[1]) for r in existing)
+    # next id (default to 0 if file is empty so max() doesn't fail)
+    next_id = 1 + max(
+        (int(r["id"].rsplit("#", 1)[1]) for r in existing),
+        default=0,
+    )
     new_records = []
     for vol in missing:
         chapter, section = MISSING[vol]
